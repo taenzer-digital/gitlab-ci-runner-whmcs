@@ -17,7 +17,7 @@ ENV NODE_VERSION 10.4.0
 
 RUN docker-php-ext-install zip
 RUN docker-php-ext-install pdo_mysql
-RUN docker-php-ext-install intl
+RUN docker-php-ext-enable intl
 
 RUN curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 
@@ -32,7 +32,6 @@ ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
 RUN npm install -g webpack
-RUN npm install -g gulp-cli
 
 RUN echo "node: $(node -v), npm: $(npm -v), yarn: $(yarn -v), php: $(php -v)"
 
