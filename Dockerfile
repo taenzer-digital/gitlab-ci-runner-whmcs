@@ -7,6 +7,9 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 RUN apt-get update -y &&\
     apt-get install openssh-client -y
 
+RUN apt-get update && apt-get install -y zlib1g-dev \
+    && docker-php-ext-install zip
+    
 ENV NVM_DIR /usr/local/bin
 ENV NODE_VERSION 10.4.0
 
