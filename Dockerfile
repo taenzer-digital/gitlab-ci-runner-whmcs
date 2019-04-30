@@ -4,16 +4,18 @@ MAINTAINER Daniel Crump <d.crump@taenzer.me>
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-RUN apt-get update -y &&\
-    apt-get install openssh-client -y
-
-RUN apt-get update && apt-get install -y zlib1g-dev \
-    && docker-php-ext-install zip
+RUN printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main" > /etc/apt/sources.list
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+RUN apt-get update -y
+RUN apt-get install -y --no-install-recommends apt-utils
+RUN apt-get dist-upgrade -y
+RUN apt-get install openssh-client -y
+RUN apt-get install -y zlib1g-dev
 
 ENV NVM_DIR /usr/local/bin
 ENV NODE_VERSION 10.4.0
 
+RUN docker-php-ext-install zip
 RUN docker-php-ext-install pdo_mysql
 RUN docker-php-ext-install intl
 
