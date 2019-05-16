@@ -80,8 +80,7 @@ RUN apt-get install php-xdebug -y
 # Run composer and phpunit installation.
 RUN composer --version && \
     composer selfupdate && \
-    composer require "phpunit/phpunit:~5.3.4" --prefer-source --no-interaction && \
-    ln -s /tmp/vendor/bin/phpunit /usr/local/bin/phpunit
+    composer global require phpunit/phpunit ^7.4 --no-progress --no-scripts --no-interaction
 
 # get nvm
 RUN curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
