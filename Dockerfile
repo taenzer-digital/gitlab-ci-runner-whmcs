@@ -42,6 +42,8 @@ RUN apt-get update && \
     php7.3-intl \
     php7.3-apcu \
     php7.3-mysql \
+    php7.3-mysqli \
+    php7.3-pdo \
     php7.3-pdo-mysql \
     php7.3-curl \
     php7.3-gd \
