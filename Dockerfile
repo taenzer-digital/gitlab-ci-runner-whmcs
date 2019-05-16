@@ -26,7 +26,8 @@ RUN apt-get install -y \
     build-essential \
     libssl-dev \
     ftp-upload \
-    git
+    git \
+    unzip
 
 RUN curl -sL https://deb.nodesource.com/setup_11.x | bash -
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
@@ -81,27 +82,6 @@ RUN apt-get install php-xdebug -y
 # Run composer update.
 RUN composer --version && \
     composer selfupdate
-
-# Install phpunit and put binary into $PATH
-RUN curl -sSLo phpunit.phar https://phar.phpunit.de/phpunit.phar \
-    && chmod 755 phpunit.phar \
-    && mv phpunit.phar /usr/local/bin/ \
-    && ln -s /usr/local/bin/phpunit.phar /usr/local/bin/phpunit \
-    && phpunit --version
-
-# Install PHP Code sniffer
-RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
-    && chmod 755 phpcs.phar \
-    && mv phpcs.phar /usr/local/bin/ \
-    && ln -s /usr/local/bin/phpcs.phar /usr/local/bin/phpcs \
-    && phpcs --version \
-    && curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcbf.phar \
-    && chmod 755 phpcbf.phar \
-    && mv phpcbf.phar /usr/local/bin/ \
-    && ln -s /usr/local/bin/phpcbf.phar /usr/local/bin/phpcbf \
-    && phpcbf --version
-    
-
 
 # get nvm
 RUN curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
