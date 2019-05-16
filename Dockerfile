@@ -1,24 +1,89 @@
-FROM tetraweb/php
+FROM ubuntu:latest
 
 MAINTAINER Daniel Crump <d.crump@taenzer.me>
 
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-RUN printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main" > /etc/apt/sources.list
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN echo "Europe/Berlin" > /etc/timezone
+
+RUN apt-get clean && \
+    apt-get update && \
+    apt-get dist-upgrade -y
+
+RUN apt-get install -y \
+    software-properties-common \
+    language-pack-en-base \
+    imagemagick \
+    rsync  \
+    openssh-client \
+    curl \
+    libmcrypt-dev \
+    libreadline-dev \
+    libicu-dev \
+    build-essential \
+    libssl-dev \
+    ftp-upload \
+    git
+
+RUN curl -sL https://deb.nodesource.com/setup_11.x | bash -
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN apt-get update -y
-RUN apt-get install -y --no-install-recommends apt-utils
-RUN apt-get dist-upgrade -y
-RUN apt-get install openssh-client -y
-RUN apt-get install -y zlib1g-dev
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php
+
+RUN apt-get update && \
+    apt-get install -y \
+    php7.3 \
+    php7.3-cli \
+    php7.3-imagick \
+    php7.3-intl \
+    php7.3-apcu \
+    php7.3-mysql \
+    php7.3-pdo-mysql \
+    php7.3-curl \
+    php7.3-gd \
+    php7.3-zip \
+    php7.3-json \
+    php7.3-xml \
+    php7.3-intl \
+    php7.3-mbstring
+
+
+# Composer 
+ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV COMPOSER_HOME /tmp
+ENV COMPOSER_VERSION 1.8.5
+
+RUN curl --silent --fail --location --retry 3 --output /tmp/installer.php --url https://raw.githubusercontent.com/composer/getcomposer.org/cb19f2aa3aeaa2006c0cd69a7ef011eb31463067/web/installer \
+  && php -r " \
+      \$signature = '48e3236262b34d30969dca3c37281b3b4bbe3221bda826ac6a9a62d6444cdb0dcd0615698a5cbe587c3f0fe57a54d8f5'; \
+      \$hash = hash('sha384', file_get_contents('/tmp/installer.php')); \
+      if (!hash_equals(\$signature, \$hash)) { \
+        unlink('/tmp/installer.php'); \
+        echo 'Integrity check failed, installer is either corrupt or worse.' . PHP_EOL; \
+        exit(1); \
+      }" \
+  && php /tmp/installer.php --no-ansi --install-dir=/usr/bin --filename=composer --version=${COMPOSER_VERSION} \
+  && composer --ansi --version --no-interaction \
+  && rm -f /tmp/installer.php \
+  && find /tmp -type d -exec chmod -v 1777 {} +
+
+RUN apt-get install -y ftp yarn nodejs
 
 ENV NVM_DIR /usr/local/bin
 ENV NODE_VERSION 10.4.0
 
-RUN docker-php-ext-install zip
-RUN docker-php-ext-install pdo_mysql
-RUN docker-php-ext-enable intl
+# XDEBUG
+RUN apt-get install php-xdebug -y
 
+# Run composer and phpunit installation.
+RUN composer --version && \
+    composer selfupdate && \
+    composer require "phpunit/phpunit:~5.3.4" --prefer-source --no-interaction && \
+    ln -s /tmp/vendor/bin/phpunit /usr/local/bin/phpunit
+
+# get nvm
 RUN curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 
 # install node and npm
