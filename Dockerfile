@@ -76,6 +76,11 @@ RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
     && ln -s /usr/local/bin/phpcbf.phar /usr/local/bin/phpcbf \
     && phpcbf --version
 
+ENV php_conf /etc/php/7.3/fpm/php.ini
+ENV fpm_conf /etc/php/7.3/fpm/pool.d/www.conf
+
+RUN sed -i -e "s/^;clear_env = no$/clear_env = no/" ${fpm_conf}
+
 RUN apt-get install -y ftp yarn nodejs
 
 ENV NVM_DIR /usr/local/bin
