@@ -4,7 +4,7 @@ MAINTAINER Daniel Crump <d.crump@taenzer.me>
 
 RUN echo "Europe/Berlin" > /etc/timezone
 
-ENV IMAGE_USER=php
+ENV IMAGE_USER=root
 ENV HOME=/home/$IMAGE_USER
 ENV COMPOSER_HOME=$HOME/.composer
 ENV PATH=$HOME/.yarn/bin:$PATH
