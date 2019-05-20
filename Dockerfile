@@ -30,6 +30,8 @@ RUN bash ./packages.sh \
   && composer global require "hirak/prestissimo:^0.3"  \
   && rm -rf ~/.composer/cache/* \
   && chown -R $IMAGE_USER:$IMAGE_USER /var/www $HOME \
-  && bash ./cleanup.sh
+  && bash ./cleanup.sh \
+  && mkdir -p ~/.ssh \
+  && chmod 700 ~/.ssh
 
 WORKDIR /var/www/html
