@@ -30,7 +30,6 @@ RUN bash ./packages.sh \
   && composer global require "hirak/prestissimo:^0.3"  \
   && rm -rf ~/.composer/cache/* \
   && chown -R $IMAGE_USER:$IMAGE_USER /var/www $HOME \
-  && curl -fsSL https://goss.rocks/install | GOSS_VER=v${GOSS_VERSION} sh \
   && bash ./cleanup.sh
 
 USER $IMAGE_USER
