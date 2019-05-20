@@ -32,6 +32,4 @@ RUN bash ./packages.sh \
   && chown -R $IMAGE_USER:$IMAGE_USER /var/www $HOME \
   && bash ./cleanup.sh
 
-USER $IMAGE_USER
-
 WORKDIR /var/www/html
