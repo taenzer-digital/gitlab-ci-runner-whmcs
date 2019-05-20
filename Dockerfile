@@ -79,7 +79,8 @@ RUN curl -OL https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar \
 ENV php_conf /etc/php/7.3/fpm/php.ini
 ENV fpm_conf /etc/php/7.3/fpm/pool.d/www.conf
 
-RUN sed -i -e "s/^;clear_env = no$/clear_env = no/" ${fpm_conf}
+RUN sed -i -e "s/^;clear_env = no$/clear_env = no/" ${fpm_conf} && \
+    sed -i -e "s/variables_order = \"GPCS\"/variables_order = \"EGPCS\"/g" ${php_conf}
 
 RUN apt-get install -y ftp yarn nodejs
 
