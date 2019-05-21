@@ -1,6 +1,6 @@
 FROM php:7.3
 
-MAINTAINER Daniel Crump <d.crump@taenzer.me>
+LABEL maintainer="d.crump@taenzer.me"
 
 RUN echo "Europe/Berlin" > /etc/timezone
 
