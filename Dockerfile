@@ -26,8 +26,6 @@ RUN bash ./packages.sh \
   echo "PATH=$(yarn global bin):$PATH" >> /root/.bashrc && \
   mkdir -p /var/www/html \
   && rm -rf ~/.composer/cache/* \
-  && bash ./cleanup.sh \
-  && mkdir -p ~/.ssh \
-  && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  && bash ./cleanup.sh 
 
 WORKDIR /var/www/html
