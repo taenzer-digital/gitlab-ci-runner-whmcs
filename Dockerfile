@@ -4,15 +4,10 @@ LABEL maintainer="d.crump@taenzer.me"
 
 RUN echo "Europe/Berlin" > /etc/timezone
 
-ENV IMAGE_USER=root
-ENV HOME=/home/$IMAGE_USER
-ENV COMPOSER_HOME=$HOME/.composer
 ENV PATH=$HOME/.yarn/bin:$PATH
 ENV PHP_VERSION=7.3
 
 ENV DEBIAN_FRONTEND=noninteractive
-
-USER root
 
 WORKDIR /tmp
 
@@ -31,6 +26,7 @@ RUN bash ./packages.sh \
   && bash ./cleanup.sh \
   && mkdir -p ~/.ssh \
   && chmod 700 ~/.ssh \
-  && touch ~/.ssh/config
+  && touch ~/.ssh/config \
+  && touch ~/.ssh/known_hosts
 
 WORKDIR /var/www/html
