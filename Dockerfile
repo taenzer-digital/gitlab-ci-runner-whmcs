@@ -19,9 +19,8 @@ RUN chmod +x /tmp/*.sh
 RUN bash ./packages.sh \
   && bash ./extensions.sh \
   && bash ./node.sh \
-  echo "PATH=$(yarn global bin):$PATH" >> /root/.profile && \
-  echo "PATH=$(yarn global bin):$PATH" >> /root/.bashrc && \
-  mkdir -p /var/www/html \
+  && echo "PATH=$(yarn global bin):$PATH" >> /root/.profile \
+  && echo "PATH=$(yarn global bin):$PATH" >> /root/.bashrc \
   && rm -rf ~/.composer/cache/* \
   && bash ./cleanup.sh \
   && mkdir -p ~/.ssh \
@@ -29,4 +28,4 @@ RUN bash ./packages.sh \
   && touch ~/.ssh/config \
   && touch ~/.ssh/known_hosts
 
-WORKDIR /var/www/html
+RUN echo "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
