@@ -2,9 +2,11 @@ FROM php:7.3
 
 LABEL maintainer="d.crump@taenzer.me"
 
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
 RUN echo "Europe/Berlin" > /etc/timezone
 
-ENV PATH=$HOME/.yarn/bin:$PATH
+ENV PATH=/home/root/.yarn/bin:$PATH
 ENV PHP_VERSION=7.3
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -28,4 +30,8 @@ RUN bash ./packages.sh \
   && touch ~/.ssh/config \
   && touch ~/.ssh/known_hosts
 
-RUN echo "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+RUN echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+
+COPY entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["php", "-a"]
