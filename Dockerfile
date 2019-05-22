@@ -10,6 +10,8 @@ ENV COMPOSER_HOME=$HOME/.composer
 ENV PATH=$HOME/.yarn/bin:$PATH
 ENV PHP_VERSION=7.3
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 USER root
 
 WORKDIR /tmp
@@ -26,6 +28,9 @@ RUN bash ./packages.sh \
   echo "PATH=$(yarn global bin):$PATH" >> /root/.bashrc && \
   mkdir -p /var/www/html \
   && rm -rf ~/.composer/cache/* \
-  && bash ./cleanup.sh 
+  && bash ./cleanup.sh \
+  && mkdir -p ~/.ssh \
+  && chmod 700 ~/.ssh \
+  && touch ~/.ssh/config
 
 WORKDIR /var/www/html

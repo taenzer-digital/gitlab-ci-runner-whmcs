@@ -15,15 +15,14 @@ echo "force-unsafe-io" > /etc/dpkg/dpkg.cfg.d/02apt-speedup
 echo "Acquire::http {No-Cache=True;};" > /etc/apt/apt.conf.d/no-cache
 echo 'APT::Install-Recommends "false";' > /etc/apt/apt.conf
 
-DEBIAN_FRONTEND=noninteractive
-    dpkg-reconfigure -f noninteractive tzdata \
+dpkg-reconfigure -f noninteractive tzdata \
     && apt-get update \
     && apt-get upgrade -yqq \
-    &&  DEBIAN_FRONTEND=noninteractive apt-get install -yqq \
+    && apt-get install -yqq \
         apt-transport-https \
         apt-utils \
         ca-certificates \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -yqq \
+    && apt-get install -yqq \
         build-essential \
         curl \
         git \
@@ -33,6 +32,7 @@ DEBIAN_FRONTEND=noninteractive
         python \
         python-dev \
         rsync \
+        ssh \
         sudo \
         unzip \
         zip \
